@@ -1,0 +1,213 @@
+/* Global styles */
+body {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    line-height: 1.6;
+  }
+
+  .header-content{
+    margin-bottom: 5rem;
+  }
+
+  /* Global styles */
+.body-main {
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  line-height: 1.6;
+  overflow: hidden;
+}
+
+  
+  .navbar-brand {
+    font-weight: bold;
+  }
+  
+  .nav-link {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+  
+  
+  
+/* Hero section */
+.hero {
+  /* Remove 'position: fixed;' */
+  height: calc(100vh - 80px); /* Set height to 100vh minus footer height */
+  width: 100%;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('Andrew.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: -1;
+}
+
+
+  
+  .hero h1 {
+    font-size: 3rem;
+    color: #fff;
+  }
+  
+  .hero p {
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 2rem;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    transition: all 0.5s ease;
+    margin: auto;
+  }
+
+  .btn-primary:hover{
+    background-color: #007bff;
+    border-color: #007bff;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+  }
+
+  .btn-grey {
+    background-color: #8a8a8a;
+    border-color: #8a8a8a;
+    transition: all 0.5s ease;
+    margin: auto;
+  }
+
+  .btn-secondary {
+    background-color: #009f13;
+    border-color: #009f13;
+    transition: all 0.5s ease;
+  }
+
+  .btn-secondary:hover{
+    background-color: #009f13;
+    border-color: #009f13;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+
+  }
+  
+  .education {
+    margin: 2rem;
+  }
+  
+  .education h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .education h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .education h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .education p {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .education h4 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+  }
+  
+  .education h5 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+  }
+  
+  .education ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  .education li {
+    margin-bottom: 1rem;
+  }
+  .custom-card {
+    border-radius: 0.25rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.5s ease;
+  }
+  
+  .custom-card:hover {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+  }
+  
+  .custom-card .card-text {
+    overflow: hidden;
+  flex-basis: 0;
+  flex-grow: 0;
+  height: 0;
+  transition: transform 0.5s ease-in-out;
+  transform: translateX(-150%);
+  }
+  
+  .custom-card:hover .card-text {
+    transform: translateX(0);
+    flex-grow: 1;
+    height: auto;
+    overflow: visible;
+  }
+
+  .custom-card .card-button {
+    overflow: hidden;
+  flex-basis: 0;
+  flex-grow: 0;
+  height: 0;
+  transition: transform 0.5s ease-in-out;
+  transform: translateX(-200%);
+  }
+  
+  .custom-card:hover .card-button {
+    transform: translateX(0);
+    flex-grow: 1;
+    height: auto;
+    overflow: visible;
+  }
+
+  .custom-card.large-card {
+    border: 1px solid #007bff;
+    background-color: rgba(0, 123, 255, 0.1);
+  }
+  
+  .custom-card.large-card .card-title {
+    color: #007bff;
+  }
+
+    
+  #page-container {
+    position: relative;
+    min-height: 100vh;
+  }
+  
+
+/* Footer styles */
+.footer {
+  background: #6cf;
+  text-align: center;
+}
+
+ .page-container {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  min-height: 100vh;
+}
