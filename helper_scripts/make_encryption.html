@@ -1,0 +1,48 @@
+<html>
+<input type="text" id="text-input" />
+<button onclick="encryptMessage()">Encrypt Text</button>
+<h3 id="encrypted-text"></h3>
+<h3 id="pin"></h3>
+
+<script>
+
+async function encryptMessage() {
+    var pin = document.getElementById("text-input").value;
+    const keyMaterial = await window.crypto.subtle.importKey(
+        "raw",
+        new TextEncoder().encode(String(pin).padEnd(16, '0')),
+        { name: "AES-CBC", length: 128 },
+        false,
+        ["encrypt"]
+    );
+
+    var iv = "0000000000000000"
+    const iv_e = new TextEncoder().encode(String(iv))
+
+    const clearMessage = new TextEncoder().encode("This is a valid pin");
+
+    try {
+        const encrypted = await window.crypto.subtle.encrypt(
+            {
+                name: "AES-CBC",
+                iv: iv_e
+            },
+            keyMaterial,
+            clearMessage
+        );
+
+        // Convert encrypted data to Base64
+        const encryptedData = new Uint8Array(encrypted);
+        const base64Encrypted = btoa(String.fromCharCode.apply(null, encryptedData));
+        
+        console.log('Encryption succeeded', base64Encrypted);
+        // write to page
+        document.getElementById("encrypted-text").innerHTML = "Encrypted: " + base64Encrypted;
+        document.getElementById("pin").innerHTML = "PIN: " + String(pin).padEnd(16, '0')
+        
+    } catch (err) {
+        console.error('Encryption failed', err);
+    }
+}
+</script>
+</html>

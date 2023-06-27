@@ -6,6 +6,8 @@
     <head>
       
 <!-- Google tag (gtag.js) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-G480CX7NN9"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -22,46 +24,65 @@
       </head>
       <body>
         <header class="header-content">
-          <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-            <div class="container">
-              <a class="navbar-brand" href="index.html">Andrew Adiletta</a>
-              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="education.html">Education</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="publications.html">Publications</a>
-                  </li>
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="hsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Hardware Security
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="hsDropdown">
-                      <a class="dropdown-item" href="rowhammer.html">Rowhammer</a>
-                      <!-- Add more dropdown items as needed -->
-                    </div>
-                  </li>
-                  <li class="nav-item">
-                      <a class="nav-link" href="about.html">About</a>
-                  <li class="nav-item">
-                    <a class="nav-link" href="contact.html">Contact</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </nav>
+          <script src="taskbar.js" type="text/javascript" defer></script>
         </header>
 <body>
   <header>
-    <!-- Add your navbar code here -->
+
+    
   </header>
   <main class="container">
   </br>
+
+  <script>
+    $(document).ready(function() {
+        // When the modal is shown, set the focus to the input
+        $('#pinModal').on('shown.bs.modal', function (e) {
+            $('#pinInput').focus();
+        });
+
+        // When the enter key is pressed while the input is focused, click the submit button
+        $('#pinInput').on('keydown', function(e) {
+            if (e.key === 'Enter') {
+                $('#submitPin').click();
+            }
+        });
+
+        // Submit button event
+        $('#submitPin').on('click', function(e) {
+            // Get the pin from the input
+            var pin = $('#pinInput').val();
+            
+            // Here, you can do something with the pin...
+            console.log(pin);
+
+            // Close the modal
+            $('#pinModal').modal('hide');
+        });
+    });
+</script>
+
+
+<!-- Modal -->
+<div class="modal fade" id="pinModal" tabindex="-1" role="dialog" aria-labelledby="pinModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="pinModalLabel">Enter the Pin</h5>
+      </div>
+      <div class="modal-body">
+        <p>A pin is required to decrypt this document as it is still under review...</p>
+        <input type="password" id="pinInput" class="form-control form-control-lg text-center" maxlength="4" pattern="\d{4}">
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="submitPin" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
     <h1 class="text-center my-5">Publications</h1>
     <div class="row">
       <div class="col-12 my-3">
@@ -70,6 +91,7 @@
             <h5 class="card-title">Memory Mayhem: Targeted Corruption of Registers and Stack Variables</h5>
             <h6 class="card-subtitle mb-2 text-muted">Adiletta, A. J., Tol, M. C., Sunar, B., Doroz, Y. (2023)</h6>
             <a class="btn btn-grey">Under Review</a>
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#pinModal">Download</button>
           </div>
         </div>
       </div>
@@ -145,6 +167,141 @@
   <footer>
     <!-- Add your footer code here -->
   </footer>
+
+
+<script src="documents/mayhem_encrypted.js" type="text/javascript" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.16.0/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+<script>
+  // Your JavaScript
+  async function decryptPdf(pin) {
+  // Ensure encrypted variable is loaded
+  if (typeof encrypted === 'undefined') {
+    alert('Encrypted file not loaded correctly.');
+    return;
+  }
+  // Decrypt the Base64 string
+  console.log(String(pin).padEnd(16, '0'));
+  let decrypted = CryptoJS.AES.decrypt(encrypted, String(pin).padEnd(16, '0'));
+
+  // Convert the decrypted WordArray to a hexadecimal string
+  let hexString = decrypted.toString();
+
+  // Convert the hexadecimal string to a byte array
+  let byteArray = hexStringToByteArray(hexString);
+
+  // Load the PDF
+  let doc = await PDFLib.PDFDocument.load(byteArray);
+
+  // Serialize the PDFDocument to bytes (a Uint8Array)
+  const pdfBytes = await doc.save();
+
+  // Create a Blob from the Uint8Array
+  let blob = new Blob([pdfBytes], {type: "application/pdf"});
+
+  // Create a link element
+  let link = document.createElement("a");
+
+  // Set the download attribute of the link element
+  link.download = "decrypted.pdf";
+
+  // Create a URL for the Blob
+  link.href = URL.createObjectURL(blob);
+
+  // Append the link to the body
+  document.body.appendChild(link);
+
+  // Simulate a click to download the file
+  link.click();
+
+  // Remove the link from the body
+  document.body.removeChild(link);
+}
+
+// Helper function to convert a hexadecimal string to a byte array
+function hexStringToByteArray(hexString) {
+  var result = [];
+  while (hexString.length >= 2) { 
+    result.push(parseInt(hexString.substring(0, 2), 16));
+
+    // Remove the used hex digits
+    hexString = hexString.substring(2, hexString.length);
+  }
+
+  return new Uint8Array(result);
+}
+
+
+</script>
+
+
+  <script>
+
+async function decryptMessage(pin) {
+  //get the pin
+
+  console.log(pin)
+  console.log(pin.padEnd(16, '0'))
+    const keyMaterial = await window.crypto.subtle.importKey(
+        "raw",
+        new TextEncoder().encode(pin.padEnd(16, '0')),
+        { name: "AES-CBC" },
+        false,
+        ["decrypt"]
+    );
+    
+    var iv = "0000000000000000"
+    const iv_e = new TextEncoder().encode(String(iv))
+ 
+    const encryptedMessage = base64ToArrayBuffer("7CVr3BQRzPzb4i1etDmh7QzsZdAPaczsibpe5u/V+Po=");
+
+    try {
+        const decrypted = await window.crypto.subtle.decrypt(
+            {
+                name: "AES-CBC",
+                iv: iv_e
+            },
+            keyMaterial,
+            encryptedMessage
+        );
+
+        return new TextDecoder().decode(new Uint8Array(decrypted));
+    } catch (err) {
+        console.error('Decryption failed', err);
+        return null;
+    }
+}
+
+function base64ToArrayBuffer(base64) {
+    const binaryString = atob(base64);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
+    return bytes.buffer;
+}
+
+
+
+var submitPin = document.getElementById("submitPin");
+submitPin.addEventListener('click', function() {
+  console.log("Pin Input Submitted");
+  
+  var pin = document.getElementById("pinInput").value;
+    decryptMessage(pin).then(decryptedMessage => {
+        if (decryptedMessage === "This is a valid pin") {
+            decryptPdf(pin);
+        } else {
+            alert('Invalid pin');
+        }
+        $('#pinModal').modal('hide'); 
+    });
+});
+
+</script>
+
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

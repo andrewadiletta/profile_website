@@ -1,0 +1,58 @@
+<!-- Your HTML -->
+
+
+<input type="file" id="pdf-upload" />
+<input type="text" id="text-input" />
+<button onclick="encryptPdf()">Encrypt PDF</button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.16.0/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script>
+  // Your JavaScript
+  async function encryptPdf() {
+    let fileInput = document.getElementById('pdf-upload');
+    let file = fileInput.files[0];
+
+    if (!file) {
+      alert('Please select a file.');
+      return;
+    }
+
+    let arrayBuffer = await file.arrayBuffer();
+
+    // Load the PDF
+    let doc = await PDFLib.PDFDocument.load(arrayBuffer);
+
+    // Use crypto-js to encrypt the loaded PDF.
+    let wordArray = CryptoJS.lib.WordArray.create(new Uint8Array(arrayBuffer));
+    var pin = document.getElementById("text-input").value;
+
+    let encrypted = CryptoJS.AES.encrypt(wordArray, String(pin).padEnd(16, '0'));
+
+    // Convert to Base64 for storage or transmission
+    let base64 = encrypted.toString();
+
+    // Create the string for the JavaScript file
+    let jsContent = 'var encrypted = "' + base64 + '";';
+
+    // Create a Blob from the JavaScript string
+    let blob = new Blob([jsContent], {type: "text/javascript"});
+
+    // Create a link element
+    let link = document.createElement("a");
+
+    // Set the download attribute of the link element
+    link.download = "encrypted.js";
+
+    // Create a URL for the Blob
+    link.href = URL.createObjectURL(blob);
+
+    // Append the link to the body
+    document.body.appendChild(link);
+
+    // Simulate a click to download the file
+    link.click();
+
+    // Remove the link from the body
+    document.body.removeChild(link);
+  }
+</script>
