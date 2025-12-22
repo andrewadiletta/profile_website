@@ -39,7 +39,7 @@ body {
   /* Remove 'position: fixed;' */
   height: calc(100vh - 80px); /* Set height to 100vh minus footer height */
   width: 100%;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('Andrew.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('Andrew2.jpg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
